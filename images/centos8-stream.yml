@@ -6,6 +6,7 @@ os_images_list:
     elements:
       - "centos"
       - "cloud-init"
+      - "cloud-init-datasources"
       - "epel"
       - "dhcp-all-interfaces"
       - "vm"
@@ -18,6 +19,7 @@ os_images_list:
       - efivar
     env:
       DIB_RELEASE: "8-stream"
+      DIB_CLOUD_INIT_DATASOURCES: 'Ec2, NoCloud, ConfigDrive, OpenStack'
     properties:
       os_type: "linux"
       os_distro: "centos"
