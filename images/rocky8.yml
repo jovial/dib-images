@@ -1,0 +1,34 @@
+---
+
+os_images_list:
+  - name: "Rocky-8-{{ timestamp }}"
+    type: qcow2
+    force_rebuild: false
+    elements:
+      - "rocky-container"
+      - "cloud-init"
+      - "openssh-server"
+      - "epel"
+      - "dhcp-all-interfaces"
+      - "vm"
+      - "grub2"
+      - "cloud-init-datasources"
+      - "enable-serial-console"
+      - "block-device-efi"
+    packages:
+      - cloud-utils-growpart
+      - gdisk
+      - efibootmgr
+      - efivar
+    env:
+      DIB_RELEASE: "8"
+      DIB_CLOUD_INIT_DATASOURCES: 'Ec2, NoCloud, ConfigDrive, OpenStack'
+      DIB_CONTAINERFILE_RUNTIME: docker
+    properties:
+      os_type: "linux"
+      os_distro: "rocky"
+      os_version: "8.6"
+      hw_disk_bus: "scsi"
+      hw_scsi_model: "virtio-scsi"
+      hw_vif_model: "virtio"
+      hw_vif_multiqueue_enabled: "true"
