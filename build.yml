@@ -1,0 +1,17 @@
+---
+
+- hosts: localhost
+  vars:
+    timestamp: "{{ ansible_facts.date_time.iso8601_basic_short }}"
+  pre_tasks:
+    - name: Validate os_images_list is defined
+      assert:
+        that:
+          - os_images_list is defined
+          - os_images_list | length >= 0
+        msg: os_images_list is not set. Have you included the image config with -e@ images/<config>.yml
+  roles:
+    - role: stackhpc.os-images
+      os_images_upload: false
+      os_images_venv: "/tmp/builder-venv"
+      os_images_force_rebuild: true

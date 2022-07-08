@@ -1,0 +1,10 @@
+## Install run time dependencies
+
+  python3 -m venv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
+  ansible-galaxy install -r requirements.yml -p roles
+
+## Building an image
+
+  ansible-playbook build.yml -e @images/centos8-stream.yml
