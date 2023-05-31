@@ -1,0 +1,54 @@
+---
+
+os_images_list:
+  - name: "Rocky-9-NVIDIA-{{ timestamp }}"
+    type: qcow2
+    force_rebuild: false
+    elements:
+      - "rocky-container"
+      - "rpm"
+      - "nvidia-vgpu"
+      - "cloud-init"
+      - "epel"
+      - "cloud-init-growpart"
+      - "selinux-permissive"
+      - "dhcp-all-interfaces"
+      - "vm"
+      - "extra-repos"
+      # Need cuda-toolkit to compile these
+      #- "nvidia-cuda-samples"
+      - "grub2"
+      - "stable-interface-names"
+      - "openssh-server"
+    is_public: True
+    packages:
+      - "dkms"
+      - "git"
+      - "tmux"
+      - "cuda-minimal-build-12-1"
+      - "cuda-demo-suite-12-1"
+      - "cuda-libraries-12-1"
+      # Limited space in /var ...
+      #- "cuda-toolkit"
+      - "vim-enhanced"
+    env:
+      DIB_CONTAINERFILE_NETWORK_DRIVER: host
+      DIB_CONTAINERFILE_RUNTIME: docker
+      DIB_RPMS: "http://seednode1:80/pulp/content/nvidia/nvidia-linux-grid-525-525.105.17-1.x86_64.rpm"
+      YUM: dnf
+      DIB_EXTRA_REPOS: "https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo"
+      DIB_NVIDIA_VGPU_CLIENT_TOKEN: "{{ lookup('file' , 'secrets/client_configuration_token_05-30-2023-12-41-40.tok') }}"
+      DIB_CLOUD_INIT_GROWPART_DEVICES:
+        - "/"
+      DIB_RELEASE: "9"
+    properties:
+      os_type: "linux"
+      os_distro: "rocky"
+      os_version: "9"
+
+os_images_git_elements:
+  - repo: "https://github.com/stackhpc/stackhpc-image-elements"
+    local: "{{ playbook_dir }}/stackhpc-image-elements"
+    version: feature/vgpu
+    elements_path: elements
+
